@@ -142,6 +142,15 @@ Puppet::Type.newtype(:vcsrepo) do
     desc "The group/gid that owns the repository files"
   end
 
+  newparam :umask do
+    desc "The umask to run the repository operations with"
+    validate do |value|
+      unless value =~ /^[0-2][0-7][0-7][0-7]$/
+        raise ArgumentError, "%s is not a valid octal umask" % value
+      end
+    end
+  end
+
   newparam :user do
     desc "The user to run for repository operations"
   end

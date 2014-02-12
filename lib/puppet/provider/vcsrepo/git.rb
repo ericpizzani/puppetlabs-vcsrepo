@@ -302,6 +302,11 @@ Puppet::Type.type(:vcsrepo).provide(:git, :parent => Puppet::Provider::Vcsrepo) 
   end
 
   def git_with_identity(*args)
+
+    if @resource.value(:umask)
+      File.umask(Integer(@resource.value(:umask)))
+    end
+
     if @resource.value(:identity)
       Tempfile.open('git-helper') do |f|
         f.puts '#!/bin/sh'
